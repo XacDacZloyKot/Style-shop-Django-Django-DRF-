@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpResponse, HttpResponseNotFound
 from .models import *
+from .forms import *
 
 
 # Create your views here.
@@ -15,10 +16,16 @@ def index(request):
     return render(request, 'products/index.html', context=context)
 
 def about(request):
-    return render(request, 'products/about.html', {'menu': menu, 'title': 'О сайте'})
+    return render(request, 'products/about.html', {'title': 'О сайте'})
 
 def addpage(request):
-    return HttpResponse("Добавление продукта")
+    if request.method == 'POST':
+        form = AddProductForm(request.POST)
+        if form.is_valid():
+            print(form.cleaned_data)
+    else:
+        form = AddProductForm()
+    return render(request, 'products/addpage.html', {'form': form, 'title': "Добавление статьи"})
 
 def for_man(request):
     return HttpResponse("Для него")
@@ -43,7 +50,6 @@ def show_item(request, item_slug):
 def show_catalog(request, cat_slug):
     curr_cat = get_object_or_404(ProductCategory, slug=cat_slug)
     products = Product.objects.filter(category_id=curr_cat.pk)
-    print(products, "Я ТТТТТТТТТТТТТТТТУУУУУУУУУУУУУУУУУУТТТТТТТТТТТТТТТ")
     
     if len(products)==0:
         raise Http404()
@@ -62,8 +68,6 @@ def archive(request, year):
         return redirect('home', permanent=True)
         
     return HttpResponse(f"<h1>Архив по годам {year}</h1>")
-
-
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound("<h1>Страница не найдена</h1>")
