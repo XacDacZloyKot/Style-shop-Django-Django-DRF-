@@ -1,0 +1,17 @@
+<ul class="page__category-list">
+    {% if cat_selected == 0  %}
+        <p class="page__category-list-title selected">Категории</p>
+    {% else %}
+        <p class="page__category-list-title"><a href="{% url 'home' %}">Категории</a></p>
+    {% endif %}
+
+    {% for cat in cats %}
+        {% if cat_selected == cat.pk  %}
+            <li class="page__category-list-item selected">{{cat}}</li>
+        {% else %}
+            <li class="page__category-list-item">
+                <a href="{{ cat.get_absolute_url}}">{{cat}}</a>
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>

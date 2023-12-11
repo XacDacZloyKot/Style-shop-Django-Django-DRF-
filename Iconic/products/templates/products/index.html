@@ -1,0 +1,26 @@
+{% extends "products/base.html" %}
+{% load products_tags %}
+
+{% block content %}
+<div class="page container-page">
+    <section class="page__category">
+        {% show_categories 'name' category_selected %}
+    </section>
+    <section class="page__catalog">
+        <ul class="page__catalog-list">
+            {% for p in products %}
+            <li class="page__catalog-list-card">
+                {% if p.image %}
+                    <a href="{{ p.get_absolute_url }}" class="page__catalog-list-card-link">
+                        <img alt="Товар" class="page__catalog-list-card-link-img" src="{{p.image.url}}"></img>
+                    </a>
+                {% endif %}
+                <p class="page__catalog-list-card-text">{{p.name}}</p>
+                <p class="page__catalog-list-card-price">{{p.price|floatformat}} ₽</p>
+                <a href="{{ p.get_absolute_url }}" class="page__catalog-list-card-btn">Купить</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </section>
+</div>
+{% endblock content%}

@@ -1,0 +1,25 @@
+{% extends "products/base.html" %}
+
+{% block content %}
+<section class="container">
+    <h1 class="name_item">{{products.short_description}}</h1>
+    <div class="item">
+        {% if products.image %}
+            <p><img src="{{products.image.url}}" class="item_img"></p>
+        {% endif %}
+        {% autoescape off %}
+        <div class="item_info">
+            <p class="item_description">
+                {{products.description}}
+            </p>
+            {% endautoescape %}
+            <p class="item_price">
+                {{products.price|floatformat}} ₽
+            </p>
+            <a href="#" class="item_buy_btn">
+                В корзину
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}

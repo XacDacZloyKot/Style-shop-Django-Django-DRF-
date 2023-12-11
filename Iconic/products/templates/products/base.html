@@ -1,0 +1,48 @@
+{% load static %}
+{% load products_tags %}
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>{{title}}</title>
+    <link type="text/css" href="{% static 'products/css/styles.css' %}" rel="stylesheet" />
+    <link type="text/css" href="{% static 'products/css/item.css' %}" rel="stylesheet" />
+    <meta http-equv="Content-Type" content="text/html; charset=utf-8">
+    <link rel="shortcut icon" href="{% static 'products/images/main.ico'%}" type="image/x-icon">
+    <meta name="viewport" content="width=device-width", "initial-scale=1.0">
+    {% get_navmenu as menu %}
+</head>
+
+<body class="body">
+    <header class="header container">
+        {% block navmenu %}
+        <a href="{% url 'home' %}" class="header__logo-link">
+            <img src="/static/products/images/main.svg" class="header__logo-link-img">
+        </a>
+        <ul class="header__navlist">
+            {% for m in menu.menu %}
+                <li class="header__navlist-item">
+                    <a href="{% url m.url_name %}" class="header__navlist-item-link">{{m.title}}</a>
+                </li>
+            {% endfor %}
+        </ul>
+        {% endblock navmenu %}
+    </header>
+    <main class="main">
+        <p class="trans">
+        {% block content %}
+        {% endblock content %}    
+    </main>
+    <footer class="footer">
+        {% block footer %}
+        <ul class="body__footer">
+            {% for m in menu.menu %}
+            <li class="body__footer-item">
+                {{m.title}}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endblock footer %}
+    </footer>
+</body>
+</html>
+    
