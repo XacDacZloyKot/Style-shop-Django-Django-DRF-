@@ -15,26 +15,33 @@ def index(request):
     
     return render(request, 'products/index.html', context=context)
 
+
 def about(request):
     return render(request, 'products/about.html', {'title': 'О сайте'})
 
+
 def addpage(request):
     if request.method == 'POST':
-        form = AddProductForm(request.POST)
+        form = AddProductForm(request.POST, request.FILES)
         if form.is_valid():
-            print(form.cleaned_data)
+            form.save()
+            return redirect('home')
     else:
         form = AddProductForm()
     return render(request, 'products/addpage.html', {'form': form, 'title': "Добавление статьи"})
 
+
 def for_man(request):
     return HttpResponse("Для него")
+
 
 def for_women(request):
     return HttpResponse("Для неё")
 
+
 def login(request):
     return HttpResponse("Регистрация")
+
 
 def show_item(request, item_slug):
     products = get_object_or_404(Product, slug=item_slug)
@@ -46,6 +53,7 @@ def show_item(request, item_slug):
     }
     
     return render(request, 'products/item.html', context=context)
+
 
 def show_catalog(request, cat_slug):
     curr_cat = get_object_or_404(ProductCategory, slug=cat_slug)
@@ -62,12 +70,13 @@ def show_catalog(request, cat_slug):
     
     return render(request, 'products/index.html', context=context)
 
+
 def archive(request, year):
     if int(year)>2023:
         # raise Http404()
         return redirect('home', permanent=True)
-        
     return HttpResponse(f"<h1>Архив по годам {year}</h1>")
+
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound("<h1>Страница не найдена</h1>")

@@ -12,8 +12,8 @@ urlpatterns = [
     path('catalog/<slug:cat_slug>/', show_catalog, name='category'),
     path('about/', about, name='about'),
     path('addpage/', addpage, name='add_page'),
-    path('addpage/', for_man, name='for_man'),
-    path('addpage/', for_women, name='for_women'),
+    path('for_man/', for_man, name='for_man'),
+    path('for_women/', for_women, name='for_women'),
     path('login/', login, name='login'),
 ] 
 

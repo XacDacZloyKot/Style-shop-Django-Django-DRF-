@@ -1,4 +1,26 @@
 .form{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     padding: 30px;
-    background-color:rgb(172, 133, 209);
+    background-color:rgb(155, 155, 155);
+    border-radius: 30px;
+}
+.form__submit-btn{
+    background-color: rgb(185, 144, 223);
+    width: fit-content;
+    border-radius: 10px;
+    padding: 15px;
+}
+.form_label{
+    display: block;
+}
+.form__input{
+    width: fit-content;
+    border: 2px solid black;
+    border-radius: 2px;
+    width: 300px;
+}
+.form__error{
+    color: rgb(133, 0, 0);
 }

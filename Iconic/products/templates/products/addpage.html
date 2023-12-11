@@ -1,9 +1,23 @@
 {% extends "products/base.html" %}
 
 {% block content %}
-    <form action="{% url 'add_page' %}" method="post" class='form container'>
+<div class="container">
+    <h1>{{title}}</h1>
+    <form action="{% url 'add_page' %}" method="post" class='form' enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Добавить</button>
+        
+        <div class"form__error">{{ form.non_field_errors }}</div>
+        {% for f in form %}
+            <p>
+                <label class="form_label" for="{{ f.id_for_label}}">
+                    {{f.label}}: 
+                </label>
+                {{f}}
+                <div class="form__error">{{f.errors}}</div> 
+            </p>
+        {% endfor %}
+
+        <button type="submit" class="form__submit-btn">Добавить</button>
     </form>
+</div>
 {% endblock content %}
