@@ -33,6 +33,8 @@ class Product(models.Model):
     price = models.DecimalField(decimal_places=2, max_digits=8, verbose_name="Цена")
     image = models.ImageField(upload_to=user_directory_path, verbose_name="Изображение")
     category = models.ForeignKey(to=ProductCategory, verbose_name=("Категория"), on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(verbose_name="Количество", default=1)
+    is_available = models.BooleanField(verbose_name="В наличии", default=True)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     
     
