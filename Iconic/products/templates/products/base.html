@@ -10,7 +10,7 @@
     <meta http-equv="Content-Type" content="text/html; charset=utf-8">
     <link rel="shortcut icon" href="{% static 'products/images/main.ico'%}" type="image/x-icon">
     <meta name="viewport" content="width=device-width", "initial-scale=1.0">
-    {% get_navmenu as menu %}
+    {% comment %} {% get_navmenu as menu %} {% endcomment %}
 </head>
 
 <body class="body">
@@ -20,7 +20,7 @@
             <img src="/static/products/images/main.svg" class="header__logo-link-img">
         </a>
         <ul class="header__navlist">
-            {% for m in menu.menu %}
+            {% for m in menu %}
                 <li class="header__navlist-item">
                     <a href="{% url m.url_name %}" class="header__navlist-item-link">{{m.title}}</a>
                 </li>
@@ -36,7 +36,7 @@
     <footer class="footer">
         {% block footer %}
         <ul class="body__footer">
-            {% for m in menu.menu %}
+            {% for m in menu %}
             <li class="body__footer-item">
                 {{m.title}}
             </li>

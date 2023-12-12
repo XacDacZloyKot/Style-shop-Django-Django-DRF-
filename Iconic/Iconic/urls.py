@@ -21,7 +21,7 @@ from Iconic import settings
 from products.views import *
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
     path('', include('products.urls')),
     
 ]

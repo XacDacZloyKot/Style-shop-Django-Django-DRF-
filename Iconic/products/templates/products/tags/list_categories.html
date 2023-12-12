@@ -6,12 +6,14 @@
     {% endif %}
 
     {% for cat in cats %}
-        {% if cat_selected == cat.pk  %}
-            <li class="page__category-list-item selected">{{cat}}</li>
-        {% else %}
-            <li class="page__category-list-item">
-                <a href="{{ cat.get_absolute_url}}">{{cat}}</a>
-            </li>
+        {% if cat.product__count > 0 %}
+            {% if cat_selected == cat.pk  %}
+                <li class="page__category-list-item selected">{{cat}}</li>
+            {% else %}
+                <li class="page__category-list-item">
+                    <a href="{{ cat.get_absolute_url}}">{{cat}}</a>
+                </li>
+            {% endif %}
         {% endif %}
     {% endfor %}
 </ul>
