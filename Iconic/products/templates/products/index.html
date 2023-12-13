@@ -7,6 +7,10 @@
         {% show_categories 'name' category_selected %}
     </section>
     <section class="page__catalog">
+        <form method="get" action="{% url 'home' %}">
+            {{ form.as_p }}
+            <button type="submit">Искать</button>
+        </form>
         <ul class="page__catalog-list">
             {% for p in products %}
             <li class="page__catalog-list-card">

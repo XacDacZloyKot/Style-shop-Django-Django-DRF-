@@ -52,3 +52,9 @@ class LoginUserForm(AuthenticationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form__input'}))
     password = forms.CharField(label='Логин', widget=forms.PasswordInput(attrs={'class': 'form__input'}))
     
+    
+class FilterProductForm(forms.Form):
+    name = forms.CharField(label='Название', max_length=50, required=False)
+    price = forms.DecimalField(label='Стоимость', required=False)
+    category = forms.ModelChoiceField(label='Категория', 
+    queryset= ProductCategory.objects.all(), empty_label='', required=False)

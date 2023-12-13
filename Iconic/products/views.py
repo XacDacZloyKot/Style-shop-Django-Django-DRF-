@@ -8,6 +8,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
+from .filters import *
 from .models import *
 from .forms import *
 from .utils import *
@@ -19,11 +20,29 @@ class CatalogHome(DataMixin, ListView):
     
     def get_context_data(self,*, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Каталог")
+        c_def = self.get_user_context(title="Каталог", form=FilterProductForm(self.request.GET))
         return dict(list(context.items()) + list(c_def.items()))
     
     def get_queryset(self) -> QuerySet[Any]: #  Какие записи должны быть на странице отображены
-        return Product.objects.filter(is_available=True)
+        # filters = {}
+        # name = self.request.GET.get('name')
+        # price = self.request.GET.get('price')
+        # category = self.request.GET.get('category')
+        # if name:
+        #     filters['name__contains'] = name
+        # if price:
+        #     filters['price__contains'] = price
+        # if category:
+        #     filters['category'] = category
+        # new_context = Product.objects.filter(**filters)
+        # return new_context
+
+        # return Product.objects.filter(is_available=True) МОЕ
+        
+        queryset = super().get_queryset()
+        st_filter = ProductFilter(self.request.GET, queryset)
+        return st_filter.qs
+
         
 
 class about(DataMixin, TemplateView):
