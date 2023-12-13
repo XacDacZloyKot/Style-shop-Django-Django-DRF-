@@ -25,9 +25,13 @@
                         <a href="{% url m.url_name %}" class="header__navlist-item-link">{{m.title}}</a>
                     </li>
             {% endfor %}
-            <li class="header__navlist-item last">
-                <a href="{% url 'register' %}" class="header__navlist-item-link">Регистрация</a> | <a href="{% url 'login' %}" class="header__navlist-item-link">Вход</a>
-            </li>
+            {% if request.user.is_authenticated %}
+                <li class="header__navlist-item last">{{user.username}} | <a href="{% url 'logout' %}"> Выйти </a></li>
+            {% else %}
+                <li class="header__navlist-item last">
+                    <a href="{% url 'register' %}" class="header__navlist-item-link">Регистрация</a> | <a href="{% url 'login' %}" class="header__navlist-item-link">Вход</a>
+                </li>
+            {% endif %}
         </ul>
         {% endblock navmenu %}
     </header>

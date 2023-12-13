@@ -10,9 +10,10 @@ urlpatterns = [
     path('', CatalogHome.as_view(), name='home'),
     path('item/<slug:item_slug>/', ShowItem.as_view(), name='item'),
     path('catalog/<slug:cat_slug>/', ShowCatalog.as_view(), name='category'),
-    path('about/', about, name='about'),
+    path('about/', about.as_view(), name='about'),
     path('addpage/', AddItem.as_view(), name='add_page'),
-    path('login/', login, name='login'),
+    path('logout/', logout_user, name='logout'),
+    path('login/', LoginUser.as_view(), name='login'),
     path('register/', RegisterUser.as_view(), name='register'),
     
 ] 

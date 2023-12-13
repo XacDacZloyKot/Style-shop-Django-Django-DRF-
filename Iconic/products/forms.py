@@ -5,7 +5,7 @@ from django.core.files.base import File
 from django.db.models.base import Model
 from django.forms.utils import ErrorList
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import UserCreationForm, UserModel
+from django.contrib.auth.forms import UserCreationForm, UserModel, AuthenticationForm
 from .models import *
 
 
@@ -31,7 +31,6 @@ class AddProductForm(forms.ModelForm):
             raise forms.ValidationError("Длинна превышает 200 символов")
         return name
     
-    
 
 class RegisterUserForm(UserCreationForm):
     username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form__input'}))
@@ -47,3 +46,9 @@ class RegisterUserForm(UserCreationForm):
             'password1': forms.PasswordInput(attrs={'class': 'form__input'}),
             'password2': forms.PasswordInput(attrs={'class': 'form__input'}),
         }
+        
+
+class LoginUserForm(AuthenticationForm):
+    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form__input'}))
+    password = forms.CharField(label='Логин', widget=forms.PasswordInput(attrs={'class': 'form__input'}))
+    

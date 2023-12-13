@@ -3,8 +3,10 @@ from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpResponse, HttpResponseNotFound
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, TemplateView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
+from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
 from .models import *
 from .forms import *
@@ -24,10 +26,34 @@ class CatalogHome(DataMixin, ListView):
         return Product.objects.filter(is_available=True)
         
 
-def about(request):
-    return render(request, 'products/about.html', {'title': 'О сайте'})
+class about(DataMixin, TemplateView):
+    template_name = 'products/about.html'
+    
+    def get_context_data(self,*, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title="О нас")
+        return dict(list(context.items()) + list(c_def.items()))
+    
+    # return render(request, 'products/about.html', {'title': 'О сайте'})
 
 
+def logout_user(request):
+    logout(request)
+    return redirect('login')
+
+class LoginUser(DataMixin, LoginView):
+    form_class = LoginUserForm
+    template_name = 'products/login.html'
+    
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title='Авторизация')
+        return dict(list(context.items()) + list(c_def.items()))
+    
+    def get_success_url(self):
+        return reverse_lazy('home')
+    
+    
 class AddItem(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddProductForm
     template_name = 'products/addpage.html'
@@ -41,17 +67,6 @@ class AddItem(LoginRequiredMixin, DataMixin, CreateView):
         return dict(list(context.items()) + list(c_def.items()))
         # context['title'] = "Добавление товара"
         # return context
-
-def for_man(request):
-    return HttpResponse("Для него")
-
-
-def for_women(request):
-    return HttpResponse("Для неё")
-
-
-def login(request):
-    return HttpResponse("Регистрация")
 
 
 class ShowItem(DataMixin,DetailView):
@@ -93,6 +108,13 @@ class RegisterUser(DataMixin, CreateView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Регистрация")
         return dict(list(context.items()) + list(c_def.items()))
+    
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('home')    
+    
+
 
 def archive(request, year):
     if int(year)>2023:
