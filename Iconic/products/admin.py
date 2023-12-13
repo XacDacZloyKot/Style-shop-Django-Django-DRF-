@@ -21,4 +21,3 @@ class ProductcategorysAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ProductsAdmin)
 admin.site.register(ProductCategory, ProductcategorysAdmin)
-# admin.site.register(Basket)

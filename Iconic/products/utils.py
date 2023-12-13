@@ -16,6 +16,8 @@ class DataMixin:
             
         context['menu'] = user_menu
         
+        if 'cat_shearch' not in context:
+            context['cat_shearch'] = 0
         
         if 'category_selected' not in context:
             context['category_selected'] = 0
