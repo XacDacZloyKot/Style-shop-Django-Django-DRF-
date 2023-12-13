@@ -13,8 +13,9 @@
                     {{f.label}}: 
                 </label>
                 {{f}}
-                <div class="form__error">{{f.errors}}</div> 
+                {% comment %} <div class="form__error">{{f.errors}}</div>  {% endcomment %}
             </p>
+            <div class="form__error">{{f.errors}}</div> 
         {% endfor %}
 
         <button type="submit" class="form__submit-btn">Добавить</button>

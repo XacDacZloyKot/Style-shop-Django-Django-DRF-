@@ -1,14 +1,14 @@
 from .models import *
 
 menu = [{'title': "Каталог", 'url_name': 'home'},
-        {'title': "Для неё", 'url_name': 'for_women'},
-        {'title': "Для него", 'url_name': 'for_man'},
+        # {'title': "Для неё", 'url_name': 'for_women'},
+        # {'title': "Для него", 'url_name': 'for_man'},
         {'title': "Добавить", 'url_name': 'add_page'},
-        {'title': "О нас", 'url_name': 'about'},
-        {'title': "Войти", 'url_name': 'login'}]
+        {'title': "О нас", 'url_name': 'about'}]
 
 
 class DataMixin:
+    paginate_by = 12
     def get_user_context(self, **kwargs):
         context = kwargs
         

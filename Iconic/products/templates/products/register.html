@@ -1,0 +1,21 @@
+{% extends "products/base.html" %}
+
+{% block content %}
+<section class="form container">
+    <h1>{{title}}</h1>
+    <form method='post'>
+        {% csrf_token %}
+        {% for f in form %}
+        <p>
+            <label class="form_label" for="{{ f.id_for_label}}">
+                {{f.label}}: 
+            </label>
+            {{f}}
+        </p>
+        <div class="form__error">{{f.errors}}</div> 
+        {% endfor %}
+        <button type="submit" class="form__submit-btn"> Регистрация </button>
+    </form>
+</section>
+{% endblock content %}
+

@@ -12,9 +12,9 @@ urlpatterns = [
     path('catalog/<slug:cat_slug>/', ShowCatalog.as_view(), name='category'),
     path('about/', about, name='about'),
     path('addpage/', AddItem.as_view(), name='add_page'),
-    path('for_man/', for_man, name='for_man'),
-    path('for_women/', for_women, name='for_women'),
     path('login/', login, name='login'),
+    path('register/', RegisterUser.as_view(), name='register'),
+    
 ] 
 
 if settings.DEBUG:
