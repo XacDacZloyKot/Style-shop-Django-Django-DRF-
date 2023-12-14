@@ -1,5 +1,7 @@
 {% load static %}
 {% load products_tags %}
+{% load spurl %}
+
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -48,13 +50,14 @@
                         <li class="page-num selected">{{ p }}</li>
                     {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
                         <li>
-                            <a href="?page={{ p }}" class="page-num">{{ p }}</a>
+                            <a href="{% spurl query=request.GET set_query='page={{ p }}'%}" class="page-num">{{ p }}</a>
+                            {% comment %} <a href="?page={{ p }}" class="page-num">{{ p }}</a> {% endcomment %}
                         </li>
                     {% endif %}
                 {% endfor %}
                 {% if page_obj.has_next %}
                     <a href="?page={{ page_obj.next_page_number }}" class="page-num">&gt;</a>
-            {% endif %}
+                {% endif %}
             </ul> 
         {% endif %}
     </main>

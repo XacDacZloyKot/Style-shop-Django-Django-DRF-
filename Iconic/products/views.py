@@ -23,22 +23,7 @@ class CatalogHome(DataMixin, ListView):
         c_def = self.get_user_context(title="Каталог", form=FilterProductForm(self.request.GET), cat_shearch=1)
         return dict(list(context.items()) + list(c_def.items()))
     
-    def get_queryset(self) -> QuerySet[Any]: #  Какие записи должны быть на странице отображены
-        # filters = {}
-        # name = self.request.GET.get('name')
-        # price = self.request.GET.get('price')
-        # category = self.request.GET.get('category')
-        # if name:
-        #     filters['name__contains'] = name
-        # if price:
-        #     filters['price__contains'] = price
-        # if category:
-        #     filters['category'] = category
-        # new_context = Product.objects.filter(**filters)
-        # return new_context
-
-        # return Product.objects.filter(is_available=True) МОЕ
-        
+    def get_queryset(self) -> QuerySet[Any]: #  Какие записи должны быть на странице отображены        
         queryset = super().get_queryset()
         st_filter = ProductFilter(self.request.GET, queryset)
         return st_filter.qs
@@ -110,9 +95,6 @@ class ShowCatalog(DataMixin,ListView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Категория: " + str(context['products'][0].category), category_selected=context['products'][0].category_id)
         return dict(list(context.items()) + list(c_def.items()))
-        # context['title'] = "Категория: " + str(context['products'][0].category)
-        # context['category_selected'] = context['products'][0].category_id
-        # return context
 
     def get_queryset(self):
         return Product.objects.filter(category__slug=self.kwargs['cat_slug'], is_available=True)

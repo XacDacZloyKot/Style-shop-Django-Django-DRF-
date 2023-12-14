@@ -12,7 +12,7 @@ a {
     color:black;
 }
 a:hover {
-    color:rgb(233, 233, 233);
+    color:rgb(255, 0, 195);
     transform: scale(1.05);
 }
 
@@ -72,11 +72,11 @@ a:hover {
 .page__category-list{
     justify-self: start;
     box-shadow: 10px 50px 80px 10px rgba(0, 0, 0, 0.2);
-    background-color:rgb(172, 133, 209);
+    background-color:rgb(255, 255, 255);
     border-radius: 20px;
     padding: 20px 50px 50px 50px;
     height: fit-content;
-    
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .selected{
@@ -97,19 +97,23 @@ a:hover {
     background-color: rgb(243, 243, 243);
     border-radius: 10px;
     display: grid;
-    grid-template: 300px 45px 30px 20px/1fr 1fr;
+    grid-template: 300px 45px 40px 40px/1fr 1fr;
     width: 250px;
     font-family: 'Courier New', Courier, monospace;
 }
+.page__catalog-list-card:hover{
+    box-shadow: 0 8px 16px rgba(230, 0, 255, 0.2);
+}
 .page__catalog-list-card-link-img:hover{
     transform: scale(1.01);
+
 }
 .page__catalog-list-card-link{
     grid-row-start: span 2;
 }
 .page__catalog-list-card-text{
     grid-column-start: span 2;
-
+    margin-bottom: 10px;
 }
 .page__catalog-list-card-price{
     align-self: end;
