@@ -19,11 +19,34 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from Iconic import settings
 from products.views import *
+from rest_framework import routers
+
+# region <Custom Router>
+class MyCustomRouter(routers.SimpleRouter):
+    routes = [
+        routers.Route(url=r'^{prefix}/$',
+                      mapping={'get': 'list'},
+                      name='{basename}-list',
+                      detail=False,
+                      initkwargs={'suffix': 'List'}),
+        routers.Route(url=r'^{prefix}/{lookup}$',
+                mapping={'get': 'retrieve'},
+                name='{basename}-detail',
+                detail=True,
+                initkwargs={'suffix': 'Detail'})
+    ]    
+# endregion
+
+router = routers.DefaultRouter()
+router.register(r'product', ProductViewSet, basename='product')
+print(router.urls)
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
-    path('api/v1/productlist/', ProductAPIView.as_view(), name='api'),
-    path('api/v1/productlist/<int:pk>/', ProductAPIView.as_view(), name='api_put'),
+    path('api/v1/', include(router.urls)), # https://127.0.0.1:8000/api/v1/product/
+    
+    path('api/v1/category/', ProductCategoryAPIList.as_view(), name='category_api_get_post'), # get
+    path('api/v1/categorydetail/<int:pk>/', ProductCategoryAPIDetailView.as_view(), name='category_detail_api'), # for item
     path('', include('products.urls')),
     
 ]

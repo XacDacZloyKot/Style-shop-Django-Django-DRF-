@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 from Iconic import settings
 from .views import *
 
+
 urlpatterns = [
     path('', CatalogHome.as_view(), name='home'),
     path('item/<slug:item_slug>/', ShowItem.as_view(), name='item'),

@@ -1,7 +1,8 @@
 from typing import Any
 from django.forms import model_to_dict
-from rest_framework import generics
-from rest_framework.views import APIView, Response 
+from rest_framework import generics, viewsets
+from rest_framework.decorators import action
+from rest_framework.views import APIView, Response
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpResponse, HttpResponseNotFound
@@ -18,49 +19,95 @@ from .utils import *
 from .serializers import *
 
 
-class ProductAPIView(APIView):
-    def get(self, request):
-        p = Product.objects.all()
-        return Response({'products': ProductSerializer(p, many=True).data})
+class ProductViewSet(viewsets.ModelViewSet):
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
     
-    def post(self, request):
-        serialize = ProductSerializer(data=request.data)
-        serialize.is_valid(raise_exception=True)
-        serialize.save()
-        return Response({'product': serialize.data})
-    
-    def put(self, request, *args, **kwargs):
-        pk = kwargs.get('pk', None)
+    def get_queryset(self):
+        pk = self.kwargs.get('pk')
         if not pk:
-            return Response({"error": "Method PUT not allowed"})
-        
-        try:
-            instance = Product.objects.get(pk=pk)
-        except:
-            return Response({"error": "Object does not exists"})
-        
-        serializer = ProductSerializer(data = request.data, instance=instance)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response({"post": serializer.data}) 
+            return Product.objects.all()[:3]
+        return Product.objects.all()
     
-    
-    def delete(self, request, *args, **kwargs):
-        pk = kwargs.get('pk', None)
-        if not pk:
-            return Response({"error": "Method PUT not allowed" + pk})
-            
-        try:
-            instance = Product.objects.filter(pk=pk).delete()
-        except:
-            return Response({"error": "Object does not exists"})
-        
-        return Response({"post": "delete product " + str(pk)})
+    @action(methods=['get'], detail = True)
+    def category(self, request, pk=None):
+        category = ProductCategory.objects.get(pk=pk)
+        return Response({'category': category.name})
             
 
-# class ProductAPIView(generics.ListAPIView):   
+
+class ProductCategoryAPIList(generics.ListCreateAPIView):
+    queryset = ProductCategory.objects.all()
+    serializer_class = ProductCategorySerializer
+
+
+class ProductCategoryAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = ProductCategory.objects.all()
+    serializer_class = ProductCategorySerializer
+
+
+# region <Hight level API full>
+# Category 
+# class ProductCategoryAPIUpdate(generics.UpdateAPIView):
+#     queryset = ProductCategory.objects.all()
+#     serializer_class = ProductCategorySerializer
+
+# Product
+# class ProductAPIList(generics.ListCreateAPIView):
 #     queryset = Product.objects.all()
 #     serializer_class = ProductSerializer
+    
+    
+# class ProductAPIUpdate(generics.UpdateAPIView):
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+
+
+# class ProductAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+
+# endregion
+
+#region <Custom API low level>
+# class ProductAPIView(APIView):
+#     def get(self, request):
+#         p = Product.objects.all()
+#         return Response({'products': ProductSerializer(p, many=True).data})
+    
+#     def post(self, request):
+#         serialize = ProductSerializer(data=request.data)
+#         serialize.is_valid(raise_exception=True)
+#         serialize.save()
+#         return Response({'product': serialize.data})
+    
+#     def put(self, request, *args, **kwargs):
+#         pk = kwargs.get('pk', None)
+#         if not pk:
+#             return Response({"error": "Method PUT not allowed"})
+        
+#         try:
+#             instance = Product.objects.get(pk=pk)
+#         except:
+#             return Response({"error": "Object does not exists"})
+        
+#         serializer = ProductSerializer(data = request.data, instance=instance)
+#         serializer.is_valid(raise_exception=True)
+#         serializer.save()
+#         return Response({"post": serializer.data}) 
+    
+#     def delete(self, request, *args, **kwargs):
+#         pk = kwargs.get('pk', None)
+#         if not pk:
+#             return Response({"error": "Method PUT not allowed" + pk})
+            
+#         try:
+#             instance = Product.objects.filter(pk=pk).delete()
+#         except:
+#             return Response({"error": "Object does not exists"})
+        
+#         return Response({"post": "delete product " + str(pk)})
+#endregion
 
 
 class CatalogHome(DataMixin, ListView):

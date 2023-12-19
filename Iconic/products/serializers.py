@@ -2,37 +2,21 @@
 from rest_framework import serializers
 from rest_framework.renderers import JSONRenderer
 from rest_framework.parsers import JSONParser
-from .models import Product
+from .models import Product, ProductCategory
 
 
 
-class ProductSerializer(serializers.Serializer):
-    name = serializers.CharField(max_length=255)
-    category_id = serializers.IntegerField()
-    # image = serializers.ImageField(allow_empty_file=True)
-    image = serializers.CharField()
-    price = serializers.IntegerField()
-    quantity = serializers.IntegerField()
-    is_available = serializers.BooleanField(default=True)
-    description = serializers.CharField()
-    short_description = serializers.CharField(max_length=255)
+class ProductSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Product
+        fields = ("name", "description", "short_description", "price", "image", "category", "is_available", "slug")
     
-    def create(self, validated_data):
-        return Product.objects.create(**validated_data)
     
-    def update(self, instance, validated_data):
-        instance.name = validated_data.get('name', instance.name)
-        instance.category_id = validated_data.get('category_id', instance.category_id)
-        instance.image = validated_data.get('image', instance.image)
-        instance.price = validated_data.get('price', instance.price)
-        instance.quantity = validated_data.get('quantity', instance.quantity)
-        instance.is_available = validated_data.get('is_available', instance.is_available)
-        instance.description = validated_data.get('description', instance.description)
-        instance.short_description = validated_data.get('short_description', instance.short_description)
-        instance.save()
-        return instance
-    
-
+class ProductCategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductCategory
+        fields = "__all__"
+# region <Create custom serializer>
 # def encode():
 #     model = ProductModel('bebra', 2, "C:\\Users\\treen\\Downloads\\aga.jpg", 1500, 300, True, 'Крутой мужик - мощный', "А ты хорош")
 #     model_sr = ProductSerializer(model)
@@ -58,3 +42,5 @@ class ProductSerializer(serializers.Serializer):
 #         self.is_available = is_available
 #         self.description = description
 #         self.short_description = short_description
+#endregion
+
