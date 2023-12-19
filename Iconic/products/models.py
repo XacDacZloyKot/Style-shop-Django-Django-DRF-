@@ -31,7 +31,7 @@ class Product(models.Model):
     description = models.TextField(blank=True, verbose_name="Описание")
     short_description = models.CharField(max_length=64, verbose_name="Краткое описание")
     price = models.DecimalField(decimal_places=2, max_digits=8, verbose_name="Цена")
-    image = models.ImageField(upload_to=user_directory_path, verbose_name="Изображение")
+    image = models.ImageField(upload_to=user_directory_path, verbose_name="Изображение", blank=True)
     category = models.ForeignKey(to=ProductCategory, verbose_name=("Категория"), on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(verbose_name="Количество", default=1)
     is_available = models.BooleanField(verbose_name="В наличии", default=True)
@@ -40,6 +40,7 @@ class Product(models.Model):
     
     def __str__(self) -> str:
         return self.name
+    
     
     def get_absolute_url(self):
         return reverse('item', kwargs={'item_slug': self.slug})

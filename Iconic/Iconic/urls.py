@@ -22,6 +22,8 @@ from products.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
+    path('api/v1/productlist/', ProductAPIView.as_view(), name='api'),
+    path('api/v1/productlist/<int:pk>/', ProductAPIView.as_view(), name='api_put'),
     path('', include('products.urls')),
     
 ]

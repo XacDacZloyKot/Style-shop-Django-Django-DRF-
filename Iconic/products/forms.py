@@ -56,5 +56,7 @@ class LoginUserForm(AuthenticationForm):
 class FilterProductForm(forms.Form):
     name = forms.CharField(label='Название', max_length=50, required=False)
     price = forms.DecimalField(label='Стоимость', required=False)
+    # print(Product.objects.all().values_list('price'))
+    # price = forms.ChoiceField(choices=Product.objects.all().values_list('price'), required=False)
     category = forms.ModelChoiceField(label='Категория', 
     queryset= ProductCategory.objects.all(), empty_label='', required=False)

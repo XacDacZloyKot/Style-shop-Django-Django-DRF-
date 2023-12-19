@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'products.apps.ProductsConfig',
     'django_filters',
     'spurl',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [

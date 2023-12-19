@@ -1,4 +1,7 @@
 from typing import Any
+from django.forms import model_to_dict
+from rest_framework import generics
+from rest_framework.views import APIView, Response 
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpResponse, HttpResponseNotFound
@@ -12,6 +15,53 @@ from .filters import *
 from .models import *
 from .forms import *
 from .utils import *
+from .serializers import *
+
+
+class ProductAPIView(APIView):
+    def get(self, request):
+        p = Product.objects.all()
+        return Response({'products': ProductSerializer(p, many=True).data})
+    
+    def post(self, request):
+        serialize = ProductSerializer(data=request.data)
+        serialize.is_valid(raise_exception=True)
+        serialize.save()
+        return Response({'product': serialize.data})
+    
+    def put(self, request, *args, **kwargs):
+        pk = kwargs.get('pk', None)
+        if not pk:
+            return Response({"error": "Method PUT not allowed"})
+        
+        try:
+            instance = Product.objects.get(pk=pk)
+        except:
+            return Response({"error": "Object does not exists"})
+        
+        serializer = ProductSerializer(data = request.data, instance=instance)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response({"post": serializer.data}) 
+    
+    
+    def delete(self, request, *args, **kwargs):
+        pk = kwargs.get('pk', None)
+        if not pk:
+            return Response({"error": "Method PUT not allowed" + pk})
+            
+        try:
+            instance = Product.objects.filter(pk=pk).delete()
+        except:
+            return Response({"error": "Object does not exists"})
+        
+        return Response({"post": "delete product " + str(pk)})
+            
+
+# class ProductAPIView(generics.ListAPIView):   
+#     queryset = Product.objects.all()
+#     serializer_class = ProductSerializer
+
 
 class CatalogHome(DataMixin, ListView):
     model = Product
@@ -29,7 +79,6 @@ class CatalogHome(DataMixin, ListView):
         return st_filter.qs
 
         
-
 class about(DataMixin, TemplateView):
     template_name = 'products/about.html'
     
@@ -44,6 +93,7 @@ class about(DataMixin, TemplateView):
 def logout_user(request):
     logout(request)
     return redirect('login')
+
 
 class LoginUser(DataMixin, LoginView):
     form_class = LoginUserForm
@@ -115,7 +165,6 @@ class RegisterUser(DataMixin, CreateView):
         login(self.request, user)
         return redirect('home')    
     
-
 
 def archive(request, year):
     if int(year)>2023:
