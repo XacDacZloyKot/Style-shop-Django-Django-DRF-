@@ -2,7 +2,9 @@ from typing import Any
 from django.forms import model_to_dict
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView, Response
+from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, IsAuthenticated
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect, render
@@ -22,15 +24,24 @@ from .utils import *
 from .serializers import *
 from .permissions import IsOwnerOrReadOnly
 
+
+class ProductAPIListPagination(PageNumberPagination):
+    page_size = 5
+    page_size_query_param = 'page_size'
+    max_page_size = 10000
+
+
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
     permission_classes = (IsAdminUser,)
+    pagination_class = ProductAPIListPagination
+    
     
     def get_queryset(self):
         pk = self.kwargs.get('pk')
         if not pk:
-            return Product.objects.all()[:3]
+            return Product.objects.all()[:15]
         return Product.objects.all()
     
     @action(methods=['get'], detail = True)
@@ -43,12 +54,15 @@ class ProductAPIList(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer 
     permission_classes = (IsAuthenticatedOrReadOnly,)
+    pagination_class = ProductAPIListPagination
+    # authentication_classes = (TokenAuthentication, )
 
 
 class ProductAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     # permission_classes = (IsOwnerOrReadOnly,)
+    pagination_class = ProductAPIListPagination
     permission_classes = (IsAuthenticated,)
 
 
@@ -56,17 +70,23 @@ class ProductAPIDestroy(generics.RetrieveDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = (IsAdminOrReadOnly,)
+    pagination_class = ProductAPIListPagination
+    
     
 
 
 class ProductCategoryAPIList(generics.ListCreateAPIView):
     queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerializer
+    pagination_class = ProductAPIListPagination
+    
 
 
 class ProductCategoryAPIDetailView(generics.RetrieveUpdateDestroyAPIView):
     queryset = ProductCategory.objects.all()
     serializer_class = ProductCategorySerializer
+    pagination_class = ProductAPIListPagination
+    
 
 
 # region <Hight level API full>
