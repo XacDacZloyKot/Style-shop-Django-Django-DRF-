@@ -1,4 +1,4 @@
-from django.urls import path, re_path
+from django.urls import include, path, re_path
 
 
 from django.conf.urls.static import static
@@ -16,7 +16,6 @@ urlpatterns = [
     path('logout/', logout_user, name='logout'),
     path('login/', LoginUser.as_view(), name='login'),
     path('register/', RegisterUser.as_view(), name='register'),
-    
 ] 
 
 if settings.DEBUG:

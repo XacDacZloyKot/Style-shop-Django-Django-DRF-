@@ -3,7 +3,7 @@ from django.forms import model_to_dict
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
 from rest_framework.views import APIView, Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser, IsAuthenticated
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpResponse, HttpResponseNotFound
@@ -48,7 +48,8 @@ class ProductAPIList(generics.ListCreateAPIView):
 class ProductAPIUpdate(generics.RetrieveUpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = (IsOwnerOrReadOnly,)
+    # permission_classes = (IsOwnerOrReadOnly,)
+    permission_classes = (IsAuthenticated,)
 
 
 class ProductAPIDestroy(generics.RetrieveDestroyAPIView):

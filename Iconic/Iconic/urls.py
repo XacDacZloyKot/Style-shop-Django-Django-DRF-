@@ -15,7 +15,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.conf.urls.static import static
 from Iconic import settings
 from products.views import *
@@ -44,6 +44,10 @@ print(router.urls)
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
     path('api/v1/drf-auth/', include('rest_framework.urls')),
+    
+    path('api/v1/auth/', include('djoser.urls')),
+    re_path(r'^auth/', include('djoser.urls.authtoken')),
+    
     
     path('api/v1/product-control/', ProductAPIList.as_view()),
     path('api/v1/product-control/<int:pk>/', ProductAPIUpdate.as_view()),
