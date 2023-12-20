@@ -6,10 +6,10 @@ from .models import *
 class ProductsAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 
                     'short_description', 'price', 'image', 'category', 'is_available',
-                    'quantity')
+                    'quantity', 'user')
     list_display_links = ('name', ) 
     search_fields = ('name', 'short_description', 'price', 'category')
-    list_editable = ('description', 'short_description', 'price', 'image', 'quantity', 'is_available')
+    list_editable = ('description', 'short_description', 'price', 'image', 'quantity', 'is_available', 'user')
     list_filter = ('price', 'name', 'is_available', 'quantity')
     prepopulated_fields = {"slug": ('name', )}
     

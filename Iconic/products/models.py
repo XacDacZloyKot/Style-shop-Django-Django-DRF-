@@ -35,6 +35,7 @@ class Product(models.Model):
     category = models.ForeignKey(to=ProductCategory, verbose_name=("Категория"), on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(verbose_name="Количество", default=1)
     is_available = models.BooleanField(verbose_name="В наличии", default=True)
+    user = models.ForeignKey(User, verbose_name='Пользователь', on_delete=models.CASCADE)
     slug = models.SlugField(max_length=255, unique=True, db_index=True, verbose_name="URL")
     
     

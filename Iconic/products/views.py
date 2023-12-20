@@ -3,6 +3,7 @@ from django.forms import model_to_dict
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
 from rest_framework.views import APIView, Response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAdminUser
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404, HttpResponse, HttpResponseNotFound
@@ -12,16 +13,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.contrib.auth import logout, login
 from django.contrib.auth.decorators import login_required
+
+from .permissions import IsAdminOrReadOnly
 from .filters import *
 from .models import *
 from .forms import *
 from .utils import *
 from .serializers import *
-
+from .permissions import IsOwnerOrReadOnly
 
 class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
+    permission_classes = (IsAdminUser,)
     
     def get_queryset(self):
         pk = self.kwargs.get('pk')
@@ -34,6 +38,24 @@ class ProductViewSet(viewsets.ModelViewSet):
         category = ProductCategory.objects.get(pk=pk)
         return Response({'category': category.name})
             
+
+class ProductAPIList(generics.ListCreateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer 
+    permission_classes = (IsAuthenticatedOrReadOnly,)
+
+
+class ProductAPIUpdate(generics.RetrieveUpdateAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = (IsOwnerOrReadOnly,)
+
+
+class ProductAPIDestroy(generics.RetrieveDestroyAPIView):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    permission_classes = (IsAdminOrReadOnly,)
+    
 
 
 class ProductCategoryAPIList(generics.ListCreateAPIView):
@@ -168,6 +190,10 @@ class AddItem(LoginRequiredMixin, DataMixin, CreateView):
         return dict(list(context.items()) + list(c_def.items()))
         # context['title'] = "Добавление товара"
         # return context
+        
+    def form_valid(self, form):
+            form.instance.user = self.request.user
+            return super().form_valid(form)
 
 
 class ShowItem(DataMixin,DetailView):

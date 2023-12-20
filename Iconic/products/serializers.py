@@ -7,9 +7,11 @@ from .models import Product, ProductCategory
 
 
 class ProductSerializer(serializers.ModelSerializer):
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    
     class Meta:
         model = Product
-        fields = ("name", "description", "short_description", "price", "image", "category", "is_available", "slug")
+        fields = "__all__"
     
     
 class ProductCategorySerializer(serializers.ModelSerializer):

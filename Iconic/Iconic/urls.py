@@ -43,9 +43,14 @@ print(router.urls)
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
-    path('api/v1/', include(router.urls)), # https://127.0.0.1:8000/api/v1/product/
     
-    path('api/v1/category/', ProductCategoryAPIList.as_view(), name='category_api_get_post'), # get
+    path('api/v1/product-control/', ProductAPIList.as_view()),
+    path('api/v1/product-control/<int:pk>/', ProductAPIUpdate.as_view()),
+    path('api/v1/product-control-del/<int:pk>/', ProductAPIDestroy.as_view()),
+    
+    path('api/v1/', include(router.urls)), # https://127.0.0.1:8000/api/v1/product/ Viewset
+    
+    path('api/v1/category/', ProductCategoryAPIList.as_view(), name='category_api_get_post'), # get Class
     path('api/v1/categorydetail/<int:pk>/', ProductCategoryAPIDetailView.as_view(), name='category_detail_api'), # for item
     path('', include('products.urls')),
     
