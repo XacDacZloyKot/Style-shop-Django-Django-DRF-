@@ -43,6 +43,7 @@ print(router.urls)
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
+    path('api/v1/drf-auth/', include('rest_framework.urls')),
     
     path('api/v1/product-control/', ProductAPIList.as_view()),
     path('api/v1/product-control/<int:pk>/', ProductAPIUpdate.as_view()),
