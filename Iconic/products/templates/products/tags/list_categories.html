@@ -16,4 +16,19 @@
             {% endif %}
         {% endif %}
     {% endfor %}
+    {% if cat_shearch == 1 %}
+        <form method="get" action="{% url 'home' %}">
+            {% csrf_token %}
+            <div class="form__error">{{ form.non_field_errors }}</div>
+            <div class="grid-form"> 
+                {% for f in form %}
+                    <label class="form_label" for="{{ f.id_for_label }}">
+                        {{f.label}}: 
+                    </label>
+                    {{f}}
+                {% endfor %}
+                </div>
+            <button class="filter-btn-submit" type="submit" class="btm_submit"> Найти </button>
+        </form>
+    {% endif %}
 </ul>

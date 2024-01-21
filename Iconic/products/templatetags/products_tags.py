@@ -24,9 +24,9 @@ def show_navmenu():
     return {"menu": menu}
 
 @register.inclusion_tag('products/tags/list_categories.html')
-def show_categories(sort=None, cat_selected=0):
+def show_categories(sort=None, cat_selected=0, form=None, cat_shearch=0):
     if not sort:
         cats = ProductCategory.objects.annotate(Count('product'))
     else:
         cats = ProductCategory.objects.annotate(Count('product')).order_by(sort)
-    return {"cats": cats, "cat_selected": cat_selected}
+    return {"cats": cats, "cat_selected": cat_selected, "form": form, 'cat_shearch': cat_shearch}

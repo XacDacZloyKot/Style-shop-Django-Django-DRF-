@@ -47,11 +47,10 @@
                 {% endif %}
                 {% for p in paginator.page_range %}
                     {% if page_obj.number == p %}
-                        <li class="page-num selected">{{ p }}</li>
+                        <li class="page-num-selected">{{ p }}</li>
                     {% elif p >= page_obj.number|add:-2 and p <= page_obj.number|add:2 %}
                         <li>
                             <a href="{% spurl query=request.GET set_query='page={{ p }}'%}" class="page-num">{{ p }}</a>
-                            {% comment %} <a href="?page={{ p }}" class="page-num">{{ p }}</a> {% endcomment %}
                         </li>
                     {% endif %}
                 {% endfor %}

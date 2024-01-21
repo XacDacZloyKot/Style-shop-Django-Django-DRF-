@@ -3,10 +3,15 @@
     flex-direction: column;
     gap: 10px;
     padding: 30px;
-    background-color:rgb(155, 155, 155);
+    /* background-color:rgb(155, 155, 155); */
+    box-shadow: 10px 50px 80px 10px rgba(0, 0, 0, 0.2);
     border-radius: 30px;
 }
 .form__submit-btn{
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 16px;
+    margin-top: 20px;
     background-color: rgb(185, 144, 223);
     width: fit-content;
     border-radius: 10px;
@@ -23,4 +28,24 @@
 }
 .form__error{
     color: rgb(133, 0, 0);
+}
+.form__input-filter {
+    width: 150px;
+    border: 2px solid;
+    border-radius: 5px;
+}
+.form__input-reg {
+    width: 250px;
+    border: 2px solid;
+    border-radius: 5px;
+}
+.filter-btn-submit{
+    margin-top: 10px;
+    font-family: 'Roboto';
+    font-weight: 400;
+    font-size: 14px;
+    background-color: rgb(185, 144, 223);
+    width: fit-content;
+    border-radius: 5px;
+    padding: 10px;
 }

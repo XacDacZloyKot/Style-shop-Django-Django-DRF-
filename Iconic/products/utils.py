@@ -9,7 +9,6 @@ class DataMixin:
     paginate_by = 3
     def get_user_context(self, **kwargs):
         context = kwargs
-        
         user_menu = menu.copy()
         if not self.request.user.is_authenticated:
             user_menu.pop(1)
@@ -22,3 +21,6 @@ class DataMixin:
         if 'category_selected' not in context:
             context['category_selected'] = 0
         return context
+    
+    
+    

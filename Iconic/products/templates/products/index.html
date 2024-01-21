@@ -4,15 +4,9 @@
 {% block content %}
 <div class="page container-page">
     <section class="page__category">
-        {% show_categories 'name' category_selected %}
+        {% show_categories 'name' category_selected form cat_shearch %}
     </section>
     <section class="page__catalog">
-        {% if cat_shearch == 1 %}
-            <form method="get" action="{% url 'home' %}">
-                {{ form.as_p }}
-                <button type="submit">Искать</button>
-            </form>
-        {% endif %}
         <ul class="page__catalog-list">
             {% for p in products %}
             <li class="page__catalog-list-card">

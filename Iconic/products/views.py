@@ -26,9 +26,10 @@ from .permissions import IsOwnerOrReadOnly
 
 
 class ProductAPIListPagination(PageNumberPagination):
-    page_size = 5
+    page_size = 2 # Число записей на странице
     page_size_query_param = 'page_size'
-    max_page_size = 10000
+    max_page_size = 10000 # Максимальное значение записей
+    # На странице API
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -72,8 +73,6 @@ class ProductAPIDestroy(generics.RetrieveDestroyAPIView):
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = ProductAPIListPagination
     
-    
-
 
 class ProductCategoryAPIList(generics.ListCreateAPIView):
     queryset = ProductCategory.objects.all()
@@ -202,22 +201,20 @@ class AddItem(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddProductForm
     template_name = 'products/addpage.html'
     login_url = reverse_lazy('home')
-    raise_exception = True #  Генерирует 403(нет доступа) если не авторизован
+    raise_exception = True #  Генерирует 403 (нет доступа) если не авторизован
     # success_url = reverse_lazy('home') #  Перенаправление после добавления поста
     
     def get_context_data(self,*, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Добавление товара")
         return dict(list(context.items()) + list(c_def.items()))
-        # context['title'] = "Добавление товара"
-        # return context
         
     def form_valid(self, form):
             form.instance.user = self.request.user
             return super().form_valid(form)
 
 
-class ShowItem(DataMixin,DetailView):
+class ShowItem(DataMixin, DetailView):
     model = Product
     template_name = 'products/item.html'
     slug_url_kwarg = 'item_slug'

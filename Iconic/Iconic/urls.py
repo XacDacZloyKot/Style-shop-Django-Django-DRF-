@@ -40,10 +40,12 @@ class MyCustomRouter(routers.SimpleRouter):
 
 router = routers.DefaultRouter()
 router.register(r'product', ProductViewSet, basename='product')
+
 print(router.urls)
 
 urlpatterns = [
     path('admin/', admin.site.urls, name='admin'),
+    
     path('api/v1/drf-auth/', include('rest_framework.urls')),
     
     path('api/v1/auth/', include('djoser.urls')),
@@ -63,6 +65,7 @@ urlpatterns = [
     
     path('api/v1/category/', ProductCategoryAPIList.as_view(), name='category_api_get_post'), # get Class
     path('api/v1/categorydetail/<int:pk>/', ProductCategoryAPIDetailView.as_view(), name='category_detail_api'), # for item
+    
     path('', include('products.urls')),
     
 ]

@@ -10,7 +10,6 @@ from .models import *
 
 
 class AddProductForm(forms.ModelForm):
-    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['category'].empty_label = "Категория не выбрана"
@@ -19,9 +18,9 @@ class AddProductForm(forms.ModelForm):
         model = Product
         fields = ['name', 'description', 'short_description','image', 'price', 'slug', 'category', 'quantity', 'is_available']
         widgets = {
-            'name': forms.TextInput(attrs={'class': 'form__input'}),
-            'short_description': forms.TextInput(attrs={'class': 'form__input'}),
-            'slug': forms.TextInput(attrs={'class': 'form__input'}),
+            'name': forms.TextInput(attrs={'class': 'form__input-filter'}),
+            'short_description': forms.TextInput(attrs={'class': 'form__input-filter'}),
+            'slug': forms.TextInput(attrs={'class': 'form__input-filter'}),
             'description': forms.Textarea(attrs={'cols':60, 'rows': 10}),
         }
         
@@ -33,30 +32,29 @@ class AddProductForm(forms.ModelForm):
     
 
 class RegisterUserForm(UserCreationForm):
-    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form__input'}))
-    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form__input'}))
-    password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form__input'}))
-    password2 = forms.CharField(label='Пароль повтор', widget=forms.PasswordInput(attrs={'class': 'form__input'}))
+    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form__input-reg'}))
+    email = forms.EmailField(label='Email', widget=forms.EmailInput(attrs={'class': 'form__input-reg'}))
+    password1 = forms.CharField(label='Пароль', widget=forms.PasswordInput(attrs={'class': 'form__input-reg'}))
+    password2 = forms.CharField(label='Пароль повтор', widget=forms.PasswordInput(attrs={'class': 'form__input-reg'}))
     
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2')
         widget = {
-            'username': forms.TextInput(attrs={'class': 'form__input'}),
-            'password1': forms.PasswordInput(attrs={'class': 'form__input'}),
-            'password2': forms.PasswordInput(attrs={'class': 'form__input'}),
+            'username': forms.TextInput(attrs={'class': 'form__input-reg'}),
+            'password1': forms.PasswordInput(attrs={'class': 'form__input-reg'}),
+            'password2': forms.PasswordInput(attrs={'class': 'form__input-reg'}),
         }
         
 
 class LoginUserForm(AuthenticationForm):
-    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form__input'}))
-    password = forms.CharField(label='Логин', widget=forms.PasswordInput(attrs={'class': 'form__input'}))
+    username = forms.CharField(label='Логин', widget=forms.TextInput(attrs={'class': 'form__input-reg'}))
+    password = forms.CharField(label='Логин', widget=forms.PasswordInput(attrs={'class': 'form__input-reg'}))
     
     
 class FilterProductForm(forms.Form):
-    name = forms.CharField(label='Название', max_length=50, required=False)
-    price = forms.DecimalField(label='Стоимость', required=False)
-    # print(Product.objects.all().values_list('price'))
-    # price = forms.ChoiceField(choices=Product.objects.all().values_list('price'), required=False)
-    category = forms.ModelChoiceField(label='Категория', 
-    queryset= ProductCategory.objects.all(), empty_label='', required=False)
+    name = forms.CharField(label='Название', max_length=50, required=False, widget=forms.TextInput(attrs={'class': 'form__input-filter'}))
+    price = forms.DecimalField(label='Стоимость', required=False, 
+                               widget=forms.NumberInput(attrs={"class":"form__input-filter", 'size': '100', 'step':0.01}))
+    category = forms.ModelChoiceField(label='Категория', queryset= ProductCategory.objects.all(), 
+                                      empty_label='', required=False, widget=forms.Select(attrs={'class': 'form__input-filter'}))
